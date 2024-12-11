@@ -35,6 +35,11 @@ $brand = isset($_GET['brand']) ? $_GET['brand'] : 'Unknown';
     
     <main>
         <section class="container-fluid main-container">
+        <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
+            <div class="alert alert-success" role="alert">
+                Data successfully added to the database.
+            </div>
+        <?php endif; ?>
             <div class="container pt-5">
                 <div class="row">
                     <div class="col-sm-6 d-flex flex-column">
@@ -108,7 +113,7 @@ $brand = isset($_GET['brand']) ? $_GET['brand'] : 'Unknown';
                               </tr>
                               <tr>
                                 <td>Warranty Status</td>
-                                <td><select class="form-select" aria-label="Default select example">
+                                <td><select class="form-select" name="warrantyStatys" id="warrantyStatusSelect" aria-label="Default select example">
                                     <option disabled selected>Open this select menu</option>
                                     <option value="In Warranty">In Warranty</option>
                                     <option value="Out of Warranty">Out of Warranty</option>
@@ -174,19 +179,38 @@ $brand = isset($_GET['brand']) ? $_GET['brand'] : 'Unknown';
                         <h3 class="fw-bold text-secondary-emphasis">Import to Database</h3>
                         <span class="mb-4">Please enter the following details to import</span>
 
-                        <form action="">
+                        <form action="import.php" method="POST">
                             <label for="employeeID" class="form-label">Employee ID</label>
-                            <input type="text" class="form-control mb-4 p-3 shadow-sm" id="employeeID" placeholder="Ex. SP-0001" required>
+                            <input type="text" class="form-control mb-4 p-3 shadow-sm" id="employeeID" name="employeeID" placeholder="Ex. SP-0001" required>
 
                             <label for="location" class="form-label">Location</label>
-                            <select class="form-select mb-4 p-3 shadow-sm" aria-label="Default select example" id="location" required>
+                            <select class="form-select mb-4 p-3 shadow-sm" aria-label="Default select example" id="location" name="location" required>
                                 <option disabled selected>Please select</option>
                                 <option value="HQ">HQ</option>
                                 <option value="Site">Site</option>
                               </select>
 
                             <label for="officeproject" class="form-label">Office/Project</label>
-                            <input type="text" class="form-control mb-4 p-3 shadow-sm" id="officeproject" required>
+                            <input type="text" class="form-control mb-4 p-3 shadow-sm" id="officeproject" name="officeproject" required>
+
+                            <!-- Hidden inputs to pass system info to the database -->
+                            <input type="hidden" name="computerName" value="<?php echo htmlspecialchars($computerName); ?>">
+                            <input type="hidden" name="osInfo" value="<?php echo htmlspecialchars($osInfo); ?>">
+                            <input type="hidden" name="ramInfo" value="<?php echo htmlspecialchars($ramInfo); ?>">
+                            <input type="hidden" name="computerBrandModel" value="<?php echo htmlspecialchars($computerBrandModel); ?>">
+                            <input type="hidden" name="motherboardInfo" value="<?php echo htmlspecialchars($motherboardInfo); ?>">
+                            <input type="hidden" name="hardDriveInfo" value="<?php echo htmlspecialchars($hardDriveInfo); ?>">
+                            <input type="hidden" name="isDomain" value="<?php echo htmlspecialchars($isDomain); ?>">
+                            <input type="hidden" name="category" value="<?php echo htmlspecialchars($category); ?>">
+                            <input type="hidden" name="brand" value="<?php echo htmlspecialchars($brand); ?>">
+                            <input type="hidden" name="condition" value="Working">
+                            <input type="hidden" name="status" value="Assigned">
+
+                            <!-- Hidden inputs for warranty info -->
+                            <input type="hidden" name="warrantyStatus" id="warrantyStatusHidden">
+                            <input type="hidden" name="startDate" id="startDateHidden">
+                            <input type="hidden" name="endDate" id="endDateHidden">
+                            <input type="hidden" name="remarks" id="remarksHidden">
 
                             <button class="btn btn-primary mb-5 shadow-sm" style="width: 200px;">Import</button>
                         </form>
@@ -195,6 +219,30 @@ $brand = isset($_GET['brand']) ? $_GET['brand'] : 'Unknown';
             </div>
         </section>
     </main>
+
+    <script>
+    // JavaScript to capture warranty status, start date, and end date
+    document.getElementById('warrantyStatusSelect').addEventListener('change', function() {
+        // Update hidden input for warranty status
+        document.getElementById('warrantyStatusHidden').value = this.value;
+    });
+
+    document.getElementById('startDate').addEventListener('change', function() {
+        // Update hidden input for start date
+        document.getElementById('startDateHidden').value = this.value;
+    });
+
+    document.getElementById('endDate').addEventListener('change', function() {
+        // Update hidden input for end date
+        document.getElementById('endDateHidden').value = this.value;
+    });
+
+    document.getElementById('remarks').addEventListener('change', function() {
+        // Update hidden input for end date
+        document.getElementById('remarksHidden').value = this.value;
+    });
+
+   </script>
     
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
