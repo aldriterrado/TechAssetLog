@@ -1,3 +1,16 @@
+<?php
+// Get the data from the URL query string (if present)
+$computerName = isset($_GET['computerName']) ? $_GET['computerName'] : 'Unknown';
+$osInfo = isset($_GET['osInfo']) ? $_GET['osInfo'] : 'Unknown';
+$ramInfo = isset($_GET['ramInfo']) ? $_GET['ramInfo'] : 'Unknown';
+$computerBrandModel = isset($_GET['computerBrandModel']) ? $_GET['computerBrandModel'] : 'Unknown';
+$motherboardInfo = isset($_GET['motherboardInfo']) ? $_GET['motherboardInfo'] : 'Unknown';
+$hardDriveInfo = isset($_GET['hardDriveInfo']) ? $_GET['hardDriveInfo'] : 'Unknown';
+$isDomain = isset($_GET['isDomain']) ? $_GET['isDomain'] : 'Unknown';
+$category = isset($_GET['category']) ? $_GET['category'] : 'Unknown';
+$brand = isset($_GET['brand']) ? $_GET['brand'] : 'Unknown';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,12 +41,12 @@
                         <h3 class="fw-bold text-secondary-emphasis">Upload Text File</h3>
                         <span class="mb-4">Please upload the text file to continue</span>
 
-                        <form action="">
-                            <label for="formFile" class="form-label text-secondary">System Information text file</label>
-                            <input class="form-control shadow-sm mb-3" type="file" id="formFile">
+                        <form action="generate.php" method="POST" enctype="multipart/form-data">
+                            <label for="systemInfoFile" class="form-label text-secondary">System Information text file</label>
+                            <input class="form-control shadow-sm mb-3" type="file" id="systemInfoFile" name="systemInfoFile">
     
-                            <label for="formFile" class="form-label text-secondary">Installed apps text file</label>
-                            <input class="form-control shadow-sm mb-4" type="file" id="formFile">
+                            <label for="appsInfoFile" class="form-label text-secondary">Installed apps text file</label>
+                            <input class="form-control shadow-sm mb-4" type="file" id="appsInfoFile" name="appsInfoFile">
 
                             <button class="btn btn-primary mb-3" style="width: 200px;">Load Files</button>
                         </form>
@@ -55,35 +68,35 @@
                             <tbody>
                               <tr>
                                 <td>PC Name</td>
-                                <td>PC Name</td>
+                                <td><?php echo trim($computerName); ?></td>
                               </tr>
                               <tr>
                                 <td>CPU Serial Number</td>
-                                <td>CPU Serial Number</td>
+                                <td><?php echo trim($motherboardInfo); ?></td>
                               </tr>
                               <tr>
                                 <td>Brand/Model</td>
-                                <td>Brand/Model</td>
+                                <td><?php echo trim($brand); ?></td>
                               </tr>
                               <tr>
                                 <td>Storage Type</td>
-                                <td>Storage Type</td>
+                                <td><?php echo trim($hardDriveInfo); ?></td>
                               </tr>
                               <tr>
                                 <td>Ram Installed</td>
-                                <td>Ram Installed</td>
+                                <td><?php echo trim($ramInfo); ?></td>
                               </tr>
                               <tr>
                                 <td>Operating System</td>
-                                <td>Operating System</td>
+                                <td><?php echo trim($osInfo); ?></td>
                               </tr>
                               <tr>
                                 <td>Domain Connected</td>
-                                <td>Domain Connected</td>
+                                <td><?php echo trim($isDomain); ?></td>
                               </tr>
                               <tr>
                                 <td>Type</td>
-                                <td>Type</td>
+                                <td><?php echo trim($category); ?></td>
                               </tr>
                               <tr>
                                 <td>Condition</td>
@@ -131,7 +144,25 @@
                             </thead>
                             <tbody>
                               <tr>
-                                <td>PC Name</td>
+                                <?php
+                                    // Check if we have installed applications data in the query string
+                                    // Check if we have installed applications data in the query string
+                                  if (isset($_GET['installedApps'])) {
+                                    // Decode the JSON-encoded string into an array
+                                    $installedApps = json_decode($_GET['installedApps'], true);
+
+                                    // Loop through the installed applications and display each one in a table row
+                                    if (count($installedApps) > 0) {
+                                        foreach ($installedApps as $app) {
+                                          echo '<tr><td>' . htmlspecialchars($app) . '</td></tr>';
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="1">No applications found.</td></tr>';
+                                    }
+                                  } else {
+                                    echo '<tr><td colspan="1">No applications found.</td></tr>';
+                                  }
+                              ?>
                               </tr>                        
                             </tbody>
                           </table>
