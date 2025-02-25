@@ -1,11 +1,20 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./../styles/login.css";
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
     const getYear = () => {
         return new Date().getFullYear();
-    }
+    };
+
+    const navigate = useNavigate();
+
+    const handleSignIn = () => {
+        // Add authentication logic here (e.g., check user credentials)
+        navigate("/TechAssetLog/dashboard");
+    };
+
     return(
         <main className='container-fluid'>
             <div className="row" style={{height: "100dvh"}}>
@@ -29,7 +38,7 @@ function Login() {
                             <img className='position-absolute' src="/password.svg" alt="" />
                                 <input id='userName' className='form-control ps-5 pe-4 pt-3 pb-3 mb-4 shadow-none' type="password" placeholder='Password' required />
                             </div>
-                            <button className='btn form-control btn-dark ps-4 pe-4 pt-3 pb-3'>Sign in</button>
+                            <button className='btn form-control btn-dark ps-4 pe-4 pt-3 pb-3' onClick={handleSignIn}>Sign in</button>
                             
                             <p className='mt-4 text-secondary'>Server Status: <span className='text-success'>Connected</span></p>
                         </form>
