@@ -3,7 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 function Layout(){
     return(
         <div style={{display: "flex", height: "100vh"}}>
-            <aside className="pt-5 bg-dark"  style={{width: "250px"}}>
+            <aside className="pt-5 bg-dark"  style={{width: "350px"}}>
                 <ul>
                     <li>
                         <Link to="/TechAssetLog/dashboard">Dashboard</Link>
